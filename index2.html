@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VNS - Workforce Query</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+    <h2>Soft_Wizz: Workforce Query</h2>
+
+    <div id="chat-container">
+        <div id="output"></div>
+        <textarea id="prompt" placeholder="Ask something like 'Show all employees in HR' or 'Update status of employee 2'"></textarea><br>
+        <button onclick="sendPrompt()">Send</button>
+    </div>
+
+    <script>
+        async function sendPrompt() {
+            const prompt = document.getElementById('prompt').value;
+            const outputDiv = document.getElementById('output');
+
+            // Append the user's prompt as a chat bubble
+            outputDiv.innerHTML += `<div class="chat-bubble user">${prompt}</div>`;
+            document.getElementById('prompt').value = ''; // Clear input after sending
+
+            // Ensure chat container scrolls down
+            outputDiv.scrollTop = outputDiv.scrollHeight;
+
+            const response = await fetch('http://127.0.0.1:8000/query', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ prompt: prompt })
+            });
+
+            const data = await response.json();
+
+            // Handle the response from the API
+            if (data.columns && data.result) {
+                outputDiv.innerHTML += createTable(data.columns, data.result);
+            }
+
+            if (data.response) {
+                outputDiv.innerHTML += `<div class="chat-bubble ai">${data.response}</div>`;
+            }
+
+            if (data.error) {
+                outputDiv.innerHTML += `<div class="chat-bubble ai">${data.error}</div>`;
+            }
+
+            if (data.query) {
+                outputDiv.innerHTML += `<div class="chat-bubble ai">${data.query}</div>`;
+            }
+
+            // Ensure chat container scrolls down after response
+            outputDiv.scrollTop = outputDiv.scrollHeight;
+        }
+
+        function createTable(columns, rows) {
+            let html = '<table><thead><tr>';
+            for (let col of columns) {
+                html += `<th>${col}</th>`;
+            }
+            html += '</tr></thead><tbody>';
+            for (let row of rows) {
+                html += '<tr>';
+                for (let cell of row) {
+                    html += `<td>${cell !== null ? cell : ''}</td>`;
+                }
+                html += '</tr>';
+            }
+            html += '</tbody></table>';
+            return html;
+        }
+    </script>
+
+</body>
+</html>

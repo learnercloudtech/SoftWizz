@@ -1,0 +1,84 @@
+/* General styling */
+body {
+    font-family: Arial, sans-serif;
+    padding: 20px;
+    max-width: 100%;
+    margin: auto;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+h2 {
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+/* Main chat container */
+#chat-container {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    overflow-y: auto;
+    padding: 10px;
+}
+
+#output {
+    flex-grow: 1;
+    margin-bottom: 10px;
+    overflow-y: auto;
+    max-height: 80vh; /* Ensures scrolling within the available space */
+}
+
+/* Input area (textarea) */
+textarea {
+    width: 100%;
+    height: 80px;
+    margin-bottom: 10px;
+    padding: 10px;
+    box-sizing: border-box;
+    resize: none;
+}
+
+/* Button */
+button {
+    padding: 10px 20px;
+    align-self: flex-end;
+}
+
+/* Styling chat messages */
+.chat-bubble {
+    max-width: 80%;
+    padding: 10px;
+    margin: 5px;
+    border-radius: 10px;
+    background-color: #f1f1f1;
+    word-wrap: break-word;
+}
+
+.chat-bubble.user {
+    background-color: #b3e0ff;
+    align-self: flex-end;
+}
+
+.chat-bubble.ai {
+    background-color: #e6e6e6;
+    align-self: flex-start;
+}
+
+/* For table output */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+th, td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+}
+
+th {
+    background-color: #f2f2f2;
+}
